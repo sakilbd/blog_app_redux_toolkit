@@ -1,11 +1,30 @@
-import { Link } from "react-router-dom";
-import React from "react";
+import { Link, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
 import Mern from "../../assets/images/mern.webp";
 import Git from "../../assets/images/git.webp";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBlog } from "../../features/blog/blogSlice";
+import RelatedPostCard from "./RelatedPostCard";
+
 
 function Blog() {
+  const {blog,isLoading,isError,error} = useSelector(state=>state.blog);
+
+  
+  const {blogId} = useParams();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBlog(blogId))
+  
+    return () => {
+      
+    }
+  }, [dispatch])
+  console.log(blog);
   return (
     <div>
+      
       <div class="container mt-8">
         <Link
           to="/"
@@ -19,38 +38,34 @@ function Blog() {
         {/* <!-- detailed post  --> */}
         <main class="post">
           <img
-            src={Mern}
+            src={blog.image}
             alt="githum"
             class="w-full rounded-md"
             id="lws-megaThumb"
           />
           <div>
             <h1 class="mt-6 text-2xl post-title" id="lws-singleTitle">
-              MERN stack for Web Development
+             {blog.title}
             </h1>
             <div class="tags" id="lws-singleTags">
-              <span>#python,</span> <span>#tech,</span> <span>#git</span>
+            {blog.tags.map(item=>{
+              return (<span>#{item}, </span>)
+            })}
             </div>
             <div class="btn-group">
               {/* <!-- handle like on button click --> */}
               <button class="like-btn" id="lws-singleLinks">
-                <i class="fa-regular fa-thumbs-up"></i> 100
+                <i class="fa-regular fa-thumbs-up"></i> {blog.likes}
               </button>
               {/* <!-- handle save on button click --> */}
               {/* <!-- use ".active" class and "Saved" text  if a post is saved, other wise "Save" --> */}
-              <button class="active save-btn" id="lws-singleSavedBtn">
-                <i class="fa-regular fa-bookmark"></i> Saved
+              <button class={`${blog.isSaved && 'active'} save-btn`} id="lws-singleSavedBtn">
+                <i class="fa-regular fa-bookmark"></i>{blog.isSaved ? ' Saved':' Save'}
               </button>
             </div>
             <div class="mt-6">
               <p>
-                A MERN stack comprises a collection of four frameworks (MongoDB,
-                ExpressJs, ReactJs and NodeJs) used to develop full-stack
-                javascript solutions for rapid, scalable, and secure
-                applications. Each framework serves a different purpose in
-                creating successful web applications. It is an excellent choice
-                for companies looking to develop high-quality responsive
-                applications quickly using just one language.
+                {blog.description}
               </p>
             </div>
           </div>
@@ -63,23 +78,8 @@ function Blog() {
           </h4>
           <div class="space-y-4 related-post-container">
             {/* <!-- related post  --> */}
-            <div class="card">
-              <a href="post.html">
-                <img src={Git} class="card-image" alt="" />
-              </a>
-              <div class="p-4">
-                <a
-                  href="post.html"
-                  class="text-lg post-title lws-RelatedPostTitle"
-                >
-                  Top Github Alternatives
-                </a>
-                <div class="mb-0 tags">
-                  <span>#python,</span> <span>#tech,</span> <span>#git</span>
-                </div>
-                <p>2010-03-27</p>
-              </div>
-            </div>
+            
+            <RelatedPostCard/>
             {/* <!-- related post ends --> */}
           </div>
         </aside>

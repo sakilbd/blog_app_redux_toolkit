@@ -1,40 +1,40 @@
-import { getVideo } from "./videoAPI";
+import { getBlog } from "./blogAPI";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 const initialState = {
-    video: {},
+    blog: {},
     isLoading: false,
     isError: false,
     error: "",
 };
 
 // async thunk
-export const fetchVideo = createAsyncThunk("video/fetchVideo", async (id) => {
-    const video = await getVideo(id);
-    return video;
+export const fetchBlog = createAsyncThunk("blog/fetchBlog", async (id) => {
+    const blog = await getBlog(id);
+    return blog;
 });
 
-const videoSlice = createSlice({
-    name: "video",
+const blogSlice = createSlice({
+    name: "blog",
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(fetchVideo.pending, (state) => {
+            .addCase(fetchBlog.pending, (state) => {
                 state.isError = false;
                 state.isLoading = true;
             })
-            .addCase(fetchVideo.fulfilled, (state, action) => {
+            .addCase(fetchBlog.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.video = action.payload;
+                state.blog = action.payload;
             })
-            .addCase(fetchVideo.rejected, (state, action) => {
+            .addCase(fetchBlog.rejected, (state, action) => {
                 state.isLoading = false;
-                state.video = {};
+                state.blog = {};
                 state.isError = true;
                 state.error = action.error?.message;
             });
     },
 });
 
-export default videoSlice.reducer;
+export default blogSlice.reducer;
