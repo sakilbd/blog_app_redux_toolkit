@@ -5,6 +5,7 @@ import Git from "../../assets/images/git.webp";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBlog } from "../../features/blog/blogSlice";
 import RelatedPostCard from "./RelatedPostCard";
+import RelatedPosts from "./RelatedPosts";
 
 
 function Blog() {
@@ -48,9 +49,10 @@ function Blog() {
              {blog.title}
             </h1>
             <div class="tags" id="lws-singleTags">
-            {blog.tags.map(item=>{
+              {/* reloads creates problem */}
+            {/* {blog.tags.map(item=>{
               return (<span>#{item}, </span>)
-            })}
+            })} */}
             </div>
             <div class="btn-group">
               {/* <!-- handle like on button click --> */}
@@ -76,12 +78,7 @@ function Blog() {
           <h4 class="mb-4 text-xl font-medium" id="lws-relatedPosts">
             Related Posts
           </h4>
-          <div class="space-y-4 related-post-container">
-            {/* <!-- related post  --> */}
-            
-            <RelatedPostCard/>
-            {/* <!-- related post ends --> */}
-          </div>
+         <RelatedPosts tags={blog.tags} blogId={blogId}  />
         </aside>
         {/* <!-- related posts ends --> */}
       </section>

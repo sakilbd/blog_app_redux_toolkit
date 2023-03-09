@@ -1,22 +1,29 @@
 import React from "react";
 import Git from "../../assets/images/git.webp";
+import { Link } from "react-router-dom";
 
-
-function RelatedPostCard() {
+function RelatedPostCard({ blogInfo }) {
+  const { id, createdAt, image, tags, title } = blogInfo;
   return (
     <div>
       <div class="card">
-        <a href="post.html">
-          <img src={Git} class="card-image" alt="" />
-        </a>
+        <Link to={`blog/${id}`}>
+          <img src={image} class="card-image" alt="" />
+        </Link>
         <div class="p-4">
-          <a href="post.html" class="text-lg post-title lws-RelatedPostTitle">
-            Top Github Alternatives
-          </a>
+          <Link
+            to={`blog/${id}`}
+            class="text-lg post-title lws-RelatedPostTitle"
+          >
+            {title}
+          </Link>
           <div class="mb-0 tags">
-            <span>#python,</span> <span>#tech,</span> <span>#git</span>
+            {tags.map((item) => {
+              return <span>#{item}, </span>;
+            })}
+            {/* <span>#python,</span> <span>#tech,</span> <span>#git</span> */}
           </div>
-          <p>2010-03-27</p>
+        <p>{createdAt}</p>
         </div>
       </div>
     </div>
