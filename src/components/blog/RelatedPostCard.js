@@ -1,4 +1,6 @@
 import React from "react";
+import Git from "../../assets/images/git.webp";
+
 
 function RelatedPostCard() {
   return (
